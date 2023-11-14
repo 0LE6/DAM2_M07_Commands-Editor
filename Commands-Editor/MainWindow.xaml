@@ -1,0 +1,119 @@
+﻿<Window x:Class="Commands_Editor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Commands_Editor"
+        mc:Ignorable="d"
+        Title="Editor de text" Height="450" Width="800"  
+        Closing="Window_Closing">
+
+    <!-- Realizado en clase -->
+    <Window.CommandBindings>
+        <CommandBinding x:Name="CommandDocumentNou"
+                        Command="ApplicationCommands.New"
+                        Executed="CommandDocumentNou_Executed"
+                        CanExecute="CommandDocumentNou_CanExecute"
+                        />
+        <CommandBinding x:Name="CommandObreDocument"
+                        Command="Open"
+                        Executed="CommandObreDocument_Executed"
+                        />
+        <CommandBinding x:Name="CommandDesaDocument"
+                        Command="Save"
+                        Executed="CommandDesaDocument_Executed"
+                        CanExecute="CommandDesaDocument_CanExecute"
+                        />
+        <CommandBinding x:Name="CommandDesaDocumentCom"
+                        Command="SaveAs"
+                        Executed="CommandDesaDocumentCom_Executed"
+                        />
+        <CommandBinding x:Name="CommandTanca"
+                        Command="Close"
+                        Executed="CommandTanca_Executed"
+                        />
+        <CommandBinding x:Name="CommandZoomIn" 
+                        Command="local:EditorCommands.ZoomIn"
+                        Executed="CommandZoomIn_Executed"
+                        />
+    </Window.CommandBindings>
+    
+    
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_Arxiu" >
+                <MenuItem Header="_Nou" Command="New"/>
+                <MenuItem Header="_Obre" Command="Open"/>
+                <MenuItem Header="_Desa" Command="Save"/>
+                <MenuItem Header="De_sa com..." Command="SaveAs"/>
+                <Separator/>
+                <MenuItem Header="Tanca" Command="Close"/>
+            </MenuItem>
+            <MenuItem Header="_Edició">
+                <MenuItem Header="_Desfés" Command="Undo"/>
+                <MenuItem Header="_Refés"  Command="Redo"/>
+                <Separator/>
+                <MenuItem Header="_Copia"  Command="Copy"
+                          CommandTarget="{Binding ElementName=txtDocument}"
+                          CommandParameter="56"/> <!-- busca en el txtDocument -->
+                <MenuItem Header="_Enganxa" Command="Paste"/>
+                <MenuItem Header="_Talla"  Command="Cut"/>
+                <MenuItem Header="E_limina" Command="Delete"/>
+                <Separator/>
+                <MenuItem Header="Selecciona-_ho tot" Command="SelectAll"/>
+            </MenuItem>
+            <!--<MenuItem Header="Edició amb codi">
+                <MenuItem Header="_Desfés" />
+                <MenuItem Header="_Refés" />
+                <Separator/>
+                <MenuItem Header="_Copia" />
+                <MenuItem Header="_Enganxa" />
+                <MenuItem Header="_Talla"  />
+                <Separator/>
+                <MenuItem Header="Selecciona-_ho tot" />
+            </MenuItem>-->
+
+            <MenuItem Header="_Vista">
+                <MenuItem Header="_Zoom">
+                    <MenuItem Header="_Augmenta"
+                              Command="local:EditorCommands.ZoomIn"
+                              CommandParameter="5"/>
+                    <MenuItem Header="_Disminueix"
+                              Command="local:EditorCommands.ZoomOut"
+                              CommandParameter="5"/>
+                </MenuItem>
+                <MenuItem Header="_Barra d'estat" IsCheckable="True" Click="MenuItem_Click"/>
+            </MenuItem>
+        </Menu>
+        <ToolBarPanel DockPanel.Dock="Top">
+            <ToolBarTray>
+                <ToolBar>
+                    <Button x:Name="btnNou" Content="Nou"  Command="New"/>
+                    <Button x:Name="btnObre" Content="Obre" Command="Open"/>
+                    <Button x:Name="btnDesa" Content="Desa" Command="Save"/>
+                </ToolBar>
+                <ToolBar>
+                    <Button x:Name="btnCopia" Content="Copia" Command="Copy"/>
+                    <Button x:Name="btnTalla" Content="Talla" Command="Cut" />
+                    <Button x:Name="btnEnganxa" Content="Enganxa"  Command="Paste"/>
+                </ToolBar>
+            </ToolBarTray>
+        </ToolBarPanel>
+        <StatusBar DockPanel.Dock="Bottom" x:Name="stbBarraEstat" 
+                   VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <StatusBarItem HorizontalAlignment="Stretch">
+                <StatusBarItem.Content>
+                    <TextBlock x:Name="tbPosicio" Text="Ln 1, Col 1"/>
+                </StatusBarItem.Content>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem x:Name="tbZoom" Content="100%" HorizontalAlignment="Right"/>
+            <Separator HorizontalAlignment="Right"/>
+            <StatusBarItem x:Name="tbCodificacio" Content="UTF-9" HorizontalAlignment="Right"/>
+            
+        </StatusBar>
+        <TextBox x:Name="txtDocument" 
+                 AcceptsReturn="True" AcceptsTab="True"
+                 TextChanged="txtDocument_TextChanged" SelectionChanged="txtDocument_SelectionChanged"/>
+    </DockPanel>
+</Window>
